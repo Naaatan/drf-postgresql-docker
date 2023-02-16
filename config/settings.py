@@ -39,8 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apiv1.apps.Apiv1Config'
+    'apiv1.apps.Apiv1Config',
+    'users.apps.UsersConfig',
+    # 3rd party apps
+    'django_filters',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
+
+AUTH_USER_MODEL = 'users.User'
+ACCOUNT_FORMS = {"signup":"users.forms.SignupForm"}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,3 +136,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django REST Framework setting
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',   # API document enable
+}
+
+# DRF Spectacular Settings (API document)
+SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    # api/schemaを表示しない
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+    'TITLE': os.environ.get('SPECTACULAR_TITLE'),
+    'DESCRIPTION': os.environ.get('SPECTACULAR_DESCRIPTION'),
+    'VERSION': os.environ.get('APP_VERSION'),
+}
