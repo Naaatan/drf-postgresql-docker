@@ -1,5 +1,5 @@
 # DRF-PostgreSQL-Docker
-DRF x PostgreSQL x nginx をDocker上に構築するためのテンプレート  
+DRF x PostgreSQL x nginx x gunicorn をDocker上に構築するためのテンプレート  
 
 以下ファイルは適宜変更すること  
 
@@ -8,21 +8,32 @@ DRF x PostgreSQL x nginx をDocker上に構築するためのテンプレート
 - apiv1/views.py
 - docker.env
 - docker.prod.env
+- containers/postgres/init.sql
+    - 'postgres'
 
-## コンテナの作成と起動
+## Development container
 
-Dockerファイルのビルド/起動  
 ```
 $ docker-compose up -d
 ```
 
+## Production container
+
+```
+$ docker-compose -f docker-compose.prod.yml up -d
+```
+
+## Creating an administrator site login user
 初回起動時、DRFコンテナ上でスーパーユーザーを作成  
+
 ```
 $ docker exec -it DRF /bin/bash
 root@XXX:/code# python manage.py createsuperuser
 ```
 
+## Option
 DRFコンテナ上で手動マイグレーション  
+
 ```
 $ docker exec -it DRF /bin/bash  
 root@XXX:/code# python manage.py makemigrations  
