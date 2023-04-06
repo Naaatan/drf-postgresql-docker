@@ -1,0 +1,3 @@
+-- POSTGRES_USERに権限を付与
+GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;
+\l+;

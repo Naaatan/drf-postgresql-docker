@@ -7,6 +7,7 @@ DRF x PostgreSQL をDocker上に構築するためのテンプレート
 - apiv1/serializers.py
 - apiv1/views.py
 - docker.env
+- docker.prod.env
 
 ## コンテナの作成と起動
 
