@@ -1,5 +1,5 @@
 # DRF-PostgreSQL-Docker
-DRF x PostgreSQL をDocker上に構築するためのテンプレート  
+DRF x PostgreSQL x nginx をDocker上に構築するためのテンプレート  
 
 以下ファイルは適宜変更すること  
 
@@ -16,9 +16,15 @@ Dockerファイルのビルド/起動
 $ docker-compose up -d
 ```
 
-DRFコンテナ上でマイグレーション  
+初回起動時、DRFコンテナ上でスーパーユーザーを作成  
 ```
 $ docker exec -it DRF /bin/bash
-root@XXX:/code# python manage.py makemigrations
-root@XXX:/code# python manage.py migrate
+root@XXX:/code# python manage.py createsuperuser
+```
+
+DRFコンテナ上で手動マイグレーション  
+```
+$ docker exec -it DRF /bin/bash  
+root@XXX:/code# python manage.py makemigrations  
+root@XXX:/code# python manage.py migrate  
 ```

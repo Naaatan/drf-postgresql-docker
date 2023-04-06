@@ -35,6 +35,7 @@ services:
     command: sh -c "/usr/local/bin/entrypoint.sh"
     volumes:
       - .:/code
+      - ./static:/static
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -46,10 +47,10 @@ services:
       dockerfile: containers/nginx/Dockerfile
     ports:
       - "80:80"
-    # 今回はDRFのため、staticはマウントしなくて良い
-    #volumes:
-    #  - ./static:/static
+    volumes:
+     - ./static:/static
     depends_on:
       - backend
 volumes:
   postgres_data:
+  static:

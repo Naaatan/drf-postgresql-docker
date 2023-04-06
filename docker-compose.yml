@@ -32,6 +32,7 @@ services:
     command: sh -c "/usr/local/bin/entrypoint.sh"
     volumes:
       - .:/code
+      - ./static:/static
     ports:
       - "8000:8000"
     depends_on:
@@ -40,3 +41,4 @@ services:
 
 volumes:
   postgres_data:
+  static:
