@@ -3,23 +3,40 @@ services:
   # PostgreSQL
   postgres_db:
     container_name: postgres_db
-    image: postgres:13-bullseye
+    build:
+      context: .
+      dockerfile: ./containers/postgres/Dockerfile
+    # M1チップでも動作するように設定（Intel Macの場合でも動作可）
+    platform: linux/x86_64
     env_file: ./docker.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    # ヘルスチェック
+    healthcheck:
+      test: pg_isready -U "${POSTGRES_USER:-postgres}" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
  
   # Django REST framework
   backend:
     container_name: DRF
     env_file: ./docker.env
-    build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: ./containers/drf/Dockerfile
+    # シェルスクリプト実行
+    command: sh -c "/usr/local/bin/entrypoint.sh"
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     depends_on:
-      - postgres_db
+      postgres_db:
+        condition: service_healthy
 
 volumes:
   postgres_data:
